@@ -1,9 +1,14 @@
 {
   "development": [
     {
-      "date": "2025-02-13",
+      "date": "2026-02-13",
       "title": "转到 afipo.top 域名",
-      "content": "购买 afipo.top 域名，弃用 blog 子域名，改为根域名"
+      "content": "购买 afipo.top 域名，弃用 blog 子域名，改为根域名。"
+    },
+    {
+      "date": "2025-11-22",
+      "title": "评论系统迁移到 Giscus",
+      "content": "评论系统从 Twikoo 改为 Giscus。"
     },
     {
       "date": "2025-09-25",
