@@ -1,0 +1,10 @@
+{
+  "development": [
+    { "date": "2026-03-21", "title": "集成 Svelte 架构", "content": "重构了纪事页面逻辑。" },
+    { "date": "2026-02-18", "title": "初次部署", "content": "使用 Astro 框架完成基础构建。" }
+  ],
+  "acknowledgments": [
+    { "title": "Fuwari Theme", "author": "saicaca", "link": "https://github.com/saicaca/fuwari", "content": "优秀的 Astro 博客主题模板。" },
+    { "title": "CSS 技巧分享", "author": "张鑫旭", "link": "https://www.zhangxinxu.com", "content": "解决了很多 Flex 布局的疑难杂症。" }
+  ]
+}
