@@ -59,7 +59,7 @@
       "date": "2025-06-17",
       "title": "Hexo 重新启用",
       "content": "尝试了多个 Hexo 主题。由于 pnpm 在 Hexo 下的 Bug，暂时退回 npm。"
-    }，
+    },
     {
       "date": "2025-06-03",
       "title": "Hexo 弃坑准备 & 停止搭建博客",
