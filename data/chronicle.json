@@ -23,12 +23,12 @@
     {
       "date": "2025-09-20",
       "title": "集成 Bangumi 追番",
-      "content": "上线Bangumi页面（感谢 幽々子(现：霞葉) 的教程），完善数据结构。"
+      "content": "上线Bangumi页面（感谢「幽々子」（现：霞葉）的教程），完善数据结构。"
     },
     {
       "date": "2025-09-13",
       "title": "「友链」与「关于」页面上线",
-      "content": "完成「友链」（感谢 AULyPc 的教程）和「关于」页面的构建"
+      "content": "完成「友链」（感谢「AULyPc」的教程）和「关于」页面的构建"
     },
     {
       "date": "2025-09-09",
@@ -59,7 +59,7 @@
       "date": "2025-06-17",
       "title": "Hexo 重新启用",
       "content": "尝试了多个 Hexo 主题。由于 pnpm 在 Hexo 下的 Bug，暂时退回 npm。"
-    },
+    }，
     {
       "date": "2025-06-03",
       "title": "Hexo 弃坑准备 & 停止搭建博客",
@@ -72,22 +72,52 @@
     },
     {
       "date": "2025-05-15",
-      "title": "博客搭建企划开始",
+      "title": "博客搭建企划开始"，
       "content": "发现 GitHub Page 功能，尝试搭建 Hexo。"
     }
   ],
   "acknowledgments": [
     {
-      "title": "Fuwari Theme",
+      "title": "Astro",
+      "author": "Astro Community",
+      "link": "https://github.com/withastro/astro",
+      "content": "目前正在使用的前端框架，对于个人是个极好的选择，很有设计理念"
+    },
+    {
+      "title": "Fuwari",
       "author": "saicaca",
       "link": "https://github.com/saicaca/fuwari",
-      "content": "目前正在使用的 Astro 博客主题，设计感极佳。"
+      "content": "目前正在使用的 Astro 博客主题，二次元浓度高。"
     },
+    {
+      "title": "追番页面",
+      "author": "幽々子（现：霞葉）",
+      "link": "https://kasuha.com/posts/fuwari-enhance-ep2/",
+      "content": "目前正在使用的「追番」页面来源，感谢「幽々子」（现：霞葉）对我的教程请求的响应"
+    },
+    {
+      "title": "友链页面",
+      "author": "AULyPc",
+      "link": "https://blog.aulypc0x0.online/posts/website/add_friendspage_in_fuwari/",
+      "content": "目前正在使用的「友链」页面来源。"
+    }
     {
       "title": "Stellar / Icarus / Butterfly",
       "author": "Hexo Community",
       "link": "https://hexo.io/themes/",
-      "content": "在 Hexo 阶段给予了大量视觉灵感的主题。感谢大佬们的开源贡献。"
+      "content": "在 Hexo 阶段给予了大量视觉灵感的主题。感谢「XAOXUU」等大佬们的开源贡献。"
+    },
+    {
+      "title": "Kimi AI",
+      "author": "Moonshot"，
+      "link": "https://www.kimi.com/",
+      "content": "杰出的AI，Coding方面能力较强，Ocr一般。自2025年10~11月起免费用户限制加高，会员价格不甚低廉，但仍是一个极好的AI。"
+    },
+    {
+      "title": "Gemini AI",
+      "author": "Google",
+      "link": "https://gemini.google.com/",
+      "content": "因为Kimi的额度低而转到Gemini。自2026年1月起开始使用，Coding方面能力强，Ocr较好，免费用户额度高，也是一个极好的AI。"
     }
   ]
 }
