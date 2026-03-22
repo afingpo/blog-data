@@ -4,6 +4,11 @@
       "date": "2026-02-13",
       "title": "转到 afipo.top 域名",
       "content": "购买 afipo.top 域名，弃用 blog 子域名，改为根域名。"
+    }，
+    {
+      "date": "2025-12-19",
+      "title": "部署平台迁移到 Vercel",
+      "content": "托管服务器从 Netlify 改为 Vercel。"
     },
     {
       "date": "2025-11-22",
