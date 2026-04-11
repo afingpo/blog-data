@@ -1,123 +1,128 @@
 {
-  "development": [
-    {
-      "date": "2026-02-13",
-      "title": "转到 afipo.top 域名",
-      "content": "购买 afipo.top 域名，弃用 blog 子域名，改为根域名。"
-    },
-    {
-      "date": "2025-12-19",
-      "title": "部署平台迁移到 Vercel",
-      "content": "托管服务器从 Netlify 改为 Vercel。"
-    },
-    {
-      "date": "2025-11-22",
-      "title": "评论系统迁移到 Giscus",
-      "content": "评论系统从 Twikoo 改为 Giscus。"
-    },
-    {
-      "date": "2025-09-25",
-      "title": "博客改造升级完工",
-      "content": "从 Vuepress 彻底迁移至 Astro，架构基本定型。"
-    },
-    {
-      "date": "2025-09-20",
-      "title": "集成 Bangumi 追番",
-      "content": "上线Bangumi页面（感谢「幽々子」（现：霞葉）的教程），完善数据结构。"
-    },
-    {
-      "date": "2025-09-13",
-      "title": "「友链」与「关于」页面上线",
-      "content": "完成「友链」（感谢「AULyPc」的教程）和「关于」页面的构建"
-    },
-    {
-      "date": "2025-09-09",
-      "title": "评论系统切换",
-      "content": "弃用 VuePress 时期的 Waline 方案，正式改用 Twikoo。"
-    },
-    {
-      "date": "2025-09-07",
-      "title": "基本数据迁移完成",
-      "content": "Fuwari 的基本页面已经可以正常使用。"
-    },
-    {
-      "date": "2025-08-31",
-      "title": "Astro 迁移启程",
-      "content": "开始将主体框架从 Vuepress 转向 Astro 并使用 Fuwari 主题。"
-    },
-    {
-      "date": "2025-07-24",
-      "title": "转到 blog.afingpo.top 域名",
-      "content": "购买 afingpo.top 域名并启用子域名 blog，弃用免费域名"
-    },
-    {
-      "date": "2025-07-01",
-      "title": "Hexo 方案废除",
-      "content": "受到 Mereith 大佬影响，转到 Vuepress。"
-    },
-    {
-      "date": "2025-06-17",
-      "title": "Hexo 重新启用",
-      "content": "尝试了多个 Hexo 主题。由于 pnpm 在 Hexo 下的 Bug，暂时退回 npm。"
-    },
-    {
-      "date": "2025-06-03",
-      "title": "Hexo 弃坑准备 & 停止搭建博客",
-      "content": "产生弃坑 Hexo 想法，因时间原因暂时停止博客搭建。"
-    },
-    {
-      "date": "2025-05-17",
-      "title": "环境重建",
-      "content": "因依赖导致 Hexo 环境崩溃，重建数据结构。"
-    },
-    {
-      "date": "2025-05-15",
-      "title": "博客搭建企划开始",
-      "content": "发现 GitHub Page 功能，尝试搭建 Hexo。"
-    }
-  ],
-  "acknowledgments": [
-    {
-      "title": "Astro",
-      "author": "Astro Community",
-      "link": "https://github.com/withastro/astro",
-      "content": "目前正在使用的前端框架，对于个人是个极好的选择，很有设计理念"
-    },
-    {
-      "title": "Fuwari",
-      "author": "saicaca",
-      "link": "https://github.com/saicaca/fuwari",
-      "content": "目前正在使用的 Astro 博客主题，二次元浓度高。"
-    },
-    {
-      "title": "追番页面",
-      "author": "幽々子（现：霞葉）",
-      "link": "https://kasuha.com/posts/fuwari-enhance-ep2/",
-      "content": "目前正在使用的「追番」页面来源，感谢「幽々子」（现：霞葉）对我的教程请求的响应"
-    },
-    {
-      "title": "友链页面",
-      "author": "AULyPc",
-      "link": "https://blog.aulypc0x0.online/posts/website/add_friendspage_in_fuwari/",
-      "content": "目前正在使用的「友链」页面来源。"
-    },
-    {
-      "title": "Stellar / Icarus / Butterfly",
-      "author": "Hexo Community",
-      "link": "https://hexo.io/themes/",
-      "content": "在 Hexo 阶段给予了大量视觉灵感的主题。感谢「XAOXUU」等大佬们的开源贡献。"
-    },
-    {
-      "title": "Kimi AI",
-      "author": "Moonshot",
-      "link": "https://www.kimi.com/",
-      "content": "杰出的AI，Coding方面能力较强，Ocr一般。自2025年10~11月起免费用户限制加高，会员价格不甚低廉，但仍是一个极好的AI。"
-    },
-    {
-      "title": "Gemini AI",
-      "author": "Google",
-      "link": "https://gemini.google.com/",
-      "content": "因为Kimi的额度低而转到Gemini。自2026年1月起开始使用，Coding方面能力强，Ocr较好，免费用户额度高，也是一个极好的AI。"
-    }
-  ]
+	"development": [
+		{
+			"date": "2026-04-12",
+			"title": "博客代码仓库开源",
+			"contect": "经考虑，将原先的私有repo改为公开。"
+		},
+		{
+			"date": "2026-02-13",
+			"title": "转到 afipo.top 域名",
+			"content": "购买 afipo.top 域名，弃用 blog 子域名，改为根域名。"
+		},
+		{
+			"date": "2025-12-19",
+			"title": "部署平台迁移到 Vercel",
+			"content": "托管服务器从 Netlify 改为 Vercel。"
+		},
+		{
+			"date": "2025-11-22",
+			"title": "评论系统迁移到 Giscus",
+			"content": "评论系统从 Twikoo 改为 Giscus。"
+		},
+		{
+			"date": "2025-09-25",
+			"title": "博客改造升级完工",
+			"content": "从 Vuepress 彻底迁移至 Astro，架构基本定型。"
+		},
+		{
+			"date": "2025-09-20",
+			"title": "集成 Bangumi 追番",
+				"content": "上线Bangumi页面（感谢「幽々子」（现：霞葉）的教程），完善数据结构。"
+		},
+		{
+			"date": "2025-09-13",
+			"title": "「友链」与「关于」页面上线",
+			"content": "完成「友链」（感谢「AULyPc」的教程）和「关于」页面的构建"
+		},
+		{
+			"date": "2025-09-09",
+			"title": "评论系统切换",
+			"content": "弃用 VuePress 时期的 Waline 方案，正式改用 Twikoo。"
+		},
+		{
+			"date": "2025-09-07",
+			"title": "基本数据迁移完成",
+			"content": "Fuwari 的基本页面已经可以正常使用。"
+		},
+		{
+			"date": "2025-08-31",
+			"title": "Astro 迁移启程",
+			"content": "开始将主体框架从 Vuepress 转向 Astro 并使用 Fuwari 主题。"
+		},
+		{
+			"date": "2025-07-24",
+			"title": "转到 blog.afingpo.top 域名",
+			"content": "购买 afingpo.top 域名并启用子域名 blog，弃用免费域名"
+		},		
+		{		
+			"date": "2025-07-01",
+		"title": "Hexo 方案废除",
+		"content": "受到 Mereith 大佬影响，转到 Vuepress。"
+		},
+		{
+			"date": "2025-06-17",
+			"title": "Hexo 重新启用",
+			"content": "尝试了多个 Hexo 主题。由于 pnpm 在 Hexo 下的 Bug，暂时退回 npm。"
+		},
+		{
+			"date": "2025-06-03",
+    		"title": "Hexo 弃坑准备 & 停止搭建博客",
+    		"content": "产生弃坑 Hexo 想法，因时间原因暂时停止博客搭建。"
+    	},	
+    	{	
+    		"date": "2025-05-17",
+    		"title": "环境重建",
+    		"content": "因依赖导致 Hexo 环境崩溃，重建数据结构。"
+    	},
+    	{
+    		"date": "2025-05-15",
+    		"title": "博客搭建企划开始",
+    		"content": "发现 GitHub Page 功能，尝试搭建 Hexo。"
+    	}
+	],
+	"acknowledgments": [
+    	{
+    		"title": "Astro",
+    		"author": "Astro Community",
+    		"link": "https://github.com/withastro/astro",
+    		"content": "目前正在使用的前端框架，对于个人是个极好的选择，很有设计理念"
+    	},
+    	{
+    		"title": "Fuwari",
+    		"author": "saicaca",
+    		"link": "https://github.com/saicaca/fuwari",
+    		"content": "目前正在使用的 Astro 博客主题，二次元浓度高。"
+    	},
+    	{
+    		"title": "追番页面",
+    		"author": "幽々子（现：霞葉）",
+    		"link": "https://kasuha.com/posts/fuwari-enhance-ep2/",
+    		"content": "目前正在使用的「追番」页面来源，感谢「幽々子」（现：霞葉）对我的教程请求的响应"
+    	},
+    	{
+    		"title": "友链页面",
+    		"author": "AULyPc",
+    		"link": "https://blog.aulypc0x0.online/posts/website/add_friendspage_in_fuwari/",
+    		"content": "目前正在使用的「友链」页面来源。"
+    	},
+    	{
+    		"title": "Stellar / Icarus / Butterfly",
+    		"author": "Hexo Community",
+    		"link": "https://hexo.io/themes/",
+    		"content": "在 Hexo 阶段给予了大量视觉灵感的主题。感谢「XAOXUU」等大佬们的开源贡献。"
+    	},
+    	{
+    		"title": "Kimi AI",
+    		"author": "Moonshot",
+    		"link": "https://www.kimi.com/",
+    		"content": "杰出的AI，Coding方面能力较强，Ocr一般。自2025年10~11月起免费用户限制加高，会员价格不甚低廉，但仍是一个极好的AI。"
+    	},
+    	{
+    		"title": "Gemini AI",
+    		"author": "Google",
+    		"link": "https://gemini.google.com/",
+    		"content": "因为Kimi的额度低而转到Gemini。自2026年1月起开始使用，Coding方面能力强，Ocr较好，免费用户额度高，也是一个极好的AI。"
+    	}
+	]
 }
