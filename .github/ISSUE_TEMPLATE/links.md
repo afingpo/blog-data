@@ -1,0 +1,61 @@
+name: 🤝 申请友链
+description: 申请与 UpXuu 的博客交换友链
+title: "[友链申请] "
+labels: ["友链申请"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # 友链申请
+
+        请填写以下信息，在收到申请后我们将人工审核。
+
+        ## 申请要求
+        1. 站点可正常访问，HTTPS优先；
+        2. 内容健康、无恶意脚本/广告轰炸；
+        3. 更新频率 ≥「年更」即可，不强制活跃；
+
+        ## 友链信息
+        - 网站名: 涵哲子居,
+        - 网站头像: "https://afipo.top/logo.webp",
+        - 网站描述: 天哲地理，共公卿好,
+        - 网站链接: "https://afipo.top",
+        - 订阅源: "https://afipo.top/rss.xml"
+
+        注：具体信息以[友链 - 涵哲子居](https://afipo.top/links)显示为准
+
+  - type: input
+    id: title
+    attributes:
+      label: "网站名称"
+      description: "你的网站名称"
+      placeholder: "例如：XXX的个人博客"
+    validations:
+      required: true
+
+  - type: input
+    id: siteurl
+    attributes:
+      label: "网站链接"
+      description: "你的网站 URL（完整的 URL，包含 https://）"
+      placeholder: "https://example.com"
+    validations:
+      required: true
+    
+  - type: input
+    id: desc
+    attributes:
+      label: "网站描述"
+      description: "简短描述你的网站或你的网站的格言"
+      placeholder: "例如：天哲地理，共公卿好"
+    validations:
+      required: true
+
+  - type: input
+    id: imgurl
+    attributes:
+      label: "网站头像"
+      description: "你的网站头像/Logo 的图片链接"
+      placeholder: "https://example.com/avatar.png"
+    validations:
+      required: false
