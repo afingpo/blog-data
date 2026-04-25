@@ -37,7 +37,7 @@ body:
     id: siteurl
     attributes:
       label: "网站链接"
-      description: "你的网站 URL（完整的 URL，包含 https://）"
+      description: "你的网站 URL（完整的 URL，包含协议）"
       placeholder: "https://example.com"
     validations:
       required: true
@@ -58,4 +58,4 @@ body:
       description: "你的网站头像/Logo 的图片链接"
       placeholder: "https://example.com/avatar.png"
     validations:
-      required: false
+      required: true
