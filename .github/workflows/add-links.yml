@@ -1,3 +1,4 @@
+
 name: 友链申请处理
 
 on:
@@ -20,25 +21,26 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@v4
 
-      - name: 处理友链申请
+      - name: 处理并写入数据
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const fs = require('fs');
+            const path = require('path');
             const issue = context.payload.issue;
             const body = issue.body || '';
-            
-            console.log('--- 调试信息 ---');
-            console.log('标签列表:', issue.labels.map(l => l.name));
-            console.log('Issue 内容:', body);
-            
-            // 确保标签存在
+
+            // 1. 标签检查
             if (!issue.labels.some(l => l.name === '友链申请')) {
-              console.log('【停止】未检测到标签 [友链申请]');
+              console.log('未检测到标签，跳过');
               return;
             }
 
-            // 正则匹配：兼容表单提交后可能产生的额外空行
+            // 2. 评论检查
+            if (context.eventName === 'issue_comment' && context.payload.comment.user.login !== issue.user.login) return;
+
+            // 3. 提取字段
             const extractField = (label, text) => {
               const regex = new RegExp(`### ${label}\\s*\\n([^#\\n]+)`, 'i');
               const match = text.match(regex);
@@ -51,35 +53,39 @@ jobs:
               desc: extractField('网站描述', body),
               imgurl: extractField('网站头像', body)
             };
+
+            if (!data.title || !data.siteurl) throw new Error('数据提取失败：请检查 Issue 格式');
+
+            // 4. 校验链接
+            const { execSync } = require('child_process');
+            try {
+              execSync(`curl -I -L --fail --max-time 5 "${data.siteurl}"`);
+            } catch (e) {
+              throw new Error(`链接无法访问: ${data.siteurl}`);
+            }
+
+            // 5. 写入 JSON
+            const filePath = path.join(process.cwd(), 'src/links.json');
+            if (!fs.existsSync(filePath)) throw new Error('找不到 src/links.json 文件');
             
-            console.log('解析数据:', data);
-            
-            if (!data.title || !data.siteurl) {
-              console.log('【停止】未能提取到必要字段');
-              await github.rest.issues.createComment({
-                owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.number,
-                body: '解析失败：请确认 Issue 内容是否符合表单格式。'
-              });
+            const links = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+            if (links.some(l => l.siteurl === data.siteurl)) {
+              console.log('链接已存在，无需更新');
               return;
             }
 
-            const { execSync } = require('child_process');
-            try {
-              console.log('正在校验链接:', data.siteurl);
-              execSync(`curl -I -L --fail --max-time 10 "${data.siteurl}"`);
-            } catch (e) {
-              console.log('【警告】链接校验失败');
-              await github.rest.issues.createComment({
-                owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.number,
-                body: `警告：无法访问链接 ${data.siteurl}。`
-              });
-            }
+            links.push(data);
+            fs.writeFileSync(filePath, JSON.stringify(links, null, 2));
+            
+            // 验证文件是否真的写入了
+            if (!fs.existsSync(filePath)) throw new Error('文件写入失败');
+            console.log('成功更新 src/links.json');
 
       - name: 提交 PR
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "feat: add friend link from #${{ github.event.issue.number }}"
+          commit-message: "feat: add link ${{ github.event.issue.title }}"
           branch: auto-link/${{ github.event.issue.number }}
           title: "友链申请: ${{ github.event.issue.title }}"
           body: "此 PR 由 Issue #${{ github.event.issue.number }} 自动生成。"
