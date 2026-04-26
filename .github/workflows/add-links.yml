@@ -20,7 +20,7 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@v4
 
-      - name: 处理并写入数据
+      - name: 逻辑校验与处理
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -28,15 +28,17 @@ jobs:
             const fs = require('fs');
             const path = require('path');
             const issue = context.payload.issue;
+            const comment = context.payload.comment;
+
+            // 1. 过滤：非 re-check 评论或非相关 Issue 不执行
+            const isRecheck = comment && comment.body.includes('re-check');
+            const isLabelled = issue.labels.some(l => l.name === '友链申请');
+            
+            if (context.eventName === 'issue_comment' && !isRecheck) return;
+            if (!isLabelled) return;
+
+            // 2. 字段提取
             const body = issue.body || '';
-
-            // 1. 标签检查
-            if (!issue.labels.some(l => l.name === '友链申请')) return;
-
-            // 2. 评论检查
-            if (context.eventName === 'issue_comment' && context.payload.comment.user.login !== issue.user.login) return;
-
-            // 3. 提取字段
             const extractField = (label, text) => {
               const regex = new RegExp(`### ${label}\\s*\\n([^#\\n]+)`, 'i');
               const match = text.match(regex);
@@ -50,29 +52,38 @@ jobs:
               imgurl: extractField('网站头像', body)
             };
 
-            // 报错反馈
+            // 反馈：字段缺失
             if (!data.title || !data.siteurl) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.number,
-                body: '处理失败：无法从表单中提取必要字段。'
+                body: `❌ **处理失败**\n\n原因：未能从表单中提取必要字段（网站名称或链接为空）。请检查 Issue 格式。`
               });
-              throw new Error('字段提取失败');
+              throw new Error('Missing fields');
             }
 
-            // 4. 写入 JSON
-            const filePath = path.join(process.cwd(), 'src/links.json');
-            const links = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-            // 修改脚本中的检查逻辑
-            const exists = links.find(l => l.siteurl === data.siteurl);
-            if (exists) {
-              console.log('检测到重复链接，匹配到的原条目:', exists);
+            // 3. 链接校验
+            const { execSync } = require('child_process');
+            try {
+              execSync(`curl -I -L --fail --max-time 10 "${data.siteurl}"`);
+            } catch (e) {
               await github.rest.issues.createComment({
                 owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.number,
-                body: `提示：链接已存在（匹配到: ${exists.title}），无需重复添加。`
+                body: `❌ **链接校验失败**\n\n地址: \`${data.siteurl}\`\n原因：无法访问该链接，请确认地址是否有效。`
               });
-              return; // 这里会直接跳过，所以不会生成 PR
+              throw new Error('Invalid URL');
             }
 
+            // 4. JSON 更新
+            const filePath = path.join(process.cwd(), 'src/links.json');
+            const links = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+            
+            if (links.some(l => l.siteurl === data.siteurl)) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.number,
+                body: `⚠️ **处理提示**\n\n该链接已存在于列表中。`
+              });
+              process.exit(0); // 正常结束
+            }
 
             links.push(data);
             fs.writeFileSync(filePath, JSON.stringify(links, null, 2));
@@ -83,25 +94,23 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           add-paths: src/links.json
-          commit-message: "feat: add friend link from #${{ github.event.issue.number }}"
+          commit-message: "feat: add link from #${{ github.event.issue.number }}"
           branch: auto-link/${{ github.event.issue.number }}
           title: "友链申请: ${{ github.event.issue.title }}"
           body: "此 PR 由 Issue #${{ github.event.issue.number }} 自动生成。"
           delete-branch: true
 
-      - name: 反馈执行结果
-        uses: actions/github-script@v7
+      - name: 反馈最终结果
         if: always()
+        uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prNumber = '${{ steps.cpr.outputs.pull-request-number }}';
-            const body = prNumber 
-              ? `处理完成：已自动创建 PR #${prNumber}，请查阅。` 
-              : '处理结束：未检测到变动或已存在。';
-            
-            await github.rest.issues.createComment({
-              owner: context.repo.owner, repo: context.repo.repo, issue_number: context.payload.issue.number,
-              body: body
-            });
+            if (prNumber) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: context.payload.issue.number,
+                body: `✅ **处理成功**\n\n已自动创建 PR #${prNumber}，请进行人工二审。`
+              });
+            }
 
