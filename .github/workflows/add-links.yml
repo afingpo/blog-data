@@ -1,65 +1,82 @@
-name: Auto Add Link
+name: 友链申请处理
+
 on:
   issues:
-    types: [opened]
+    types: [opened, reopened]
+  issue_comment:
+    types: [created]
 
 jobs:
-  add-link:
-    # 确保只处理带有“友链申请”标签的 Issue
-    if: contains(github.event.issue.labels.*.name, '友链申请')
+  process-link:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: write
       pull-requests: write
+
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Parse Issue Form
-        id: parse
-        uses: stefanbuck/github-issue-parser@v3
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 处理友链申请
+        uses: actions/github-script@v7
         with:
-          template-path: .github/ISSUE_TEMPLATE/links.yml
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+            const issue = context.payload.issue;
+            const body = issue.body || '';
 
-      - name: Check URL Accessibility
-        shell: bash
-        env:
-          JSON_DATA: ${{ steps.parse.outputs.jsonString }}
-        run: |
-          # 提取 siteurl 和 imgurl
-          SITE_URL=$(echo "$JSON_DATA" | jq -r '.siteurl')
-          IMG_URL=$(echo "$JSON_DATA" | jq -r '.imgurl')
-          
-          # 检查站点链接 (返回码必须为 200 或 301/302 重定向)
-          echo "正在检查站点: $SITE_URL"
-          curl -I -L --fail --silent --show-error --max-time 10 "$SITE_URL" > /dev/null
-          
-          # 检查头像链接
-          echo "正在检查头像: $IMG_URL"
-          curl -I -L --fail --silent --show-error --max-time 10 "$IMG_URL" > /dev/null
-          
-          echo "✅ 链接访问正常，准备处理数据。"
+            // 检查标签
+            const isFriendRequest = issue.labels.some(l => l.name === '友链申请');
+            if (!isFriendRequest) return;
 
-      - name: Update JSON
-        shell: bash
-        env:
-          # 解析后的 JSON 字符串
-          JSON_DATA: ${{ steps.parse.outputs.jsonString }}
-        run: |
-          # 使用 jq 构建新的链接对象
-          # 注意：id 必须与 links.yml 中的 id 一一对应
-          echo "$JSON_DATA" | jq '{title: .title, siteurl: .siteurl, desc: .desc, imgurl: .imgurl}' > new_link.json
-          
-          # 将新对象追加到原数组末尾
-          # 如果原文件是空的或损坏，jq 会报错，建议确保 links.json 初始至少是 []
-          jq -s '.[0] + [.[1]]' src/links.json new_link.json > temp.json && mv temp.json src/links.json
-          
-      - name: Create Pull Request
+            // 评论触发检查：确保是作者回复
+            if (context.eventName === 'issue_comment' && context.payload.comment.user.login !== issue.user.login) return;
+
+            // 提取字段
+            function extractField(label, text) {
+              const regex = new RegExp(`### ${label}\\s*\\n([^#]+)`, 'i');
+              const match = text.match(regex);
+              return match ? match[1].trim() : null;
+            }
+
+            const data = {
+              title: extractField('网站名称', body),
+              siteurl: extractField('网站链接', body),
+              desc: extractField('网站描述', body),
+              imgurl: extractField('网站头像', body)
+            };
+
+            if (!data.title || !data.siteurl) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.number,
+                body: '信息不完整，请检查表单是否填写正确。'
+              });
+              return;
+            }
+
+            // 校验 URL 可访问性
+            const { execSync } = require('child_process');
+            try {
+              execSync(`curl -I -L --fail --max-time 5 "${data.siteurl}"`);
+            } catch (e) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.number,
+                body: `警告：无法访问链接 ${data.siteurl}，请确认地址是否有效。`
+              });
+              return;
+            }
+
+      - name: 提交 PR
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "feat: add friend link from #${{ github.event.issue.number }}"
-          branch: add-link/${{ github.event.issue.number }}
-          delete-branch: true
+          commit-message: "feat: add friend link for ${{ github.event.issue.title }}"
+          branch: auto-link/${{ github.event.issue.number }}
           title: "友链申请: ${{ github.event.issue.title }}"
-          body: "自动处理友链申请 #${{ github.event.issue.number }}，请审核数据是否准确。"
+          body: |
+            此 PR 由 Issue #${{ github.event.issue.number }} 自动生成。
+            请人工确认友链信息是否符合规范。
+          delete-branch: true
 
