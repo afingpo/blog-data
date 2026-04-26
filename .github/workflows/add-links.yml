@@ -25,23 +25,25 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const fs = require('fs');
             const issue = context.payload.issue;
             const body = issue.body || '';
+            
+            console.log('--- 调试信息 ---');
+            console.log('标签列表:', issue.labels.map(l => l.name));
+            console.log('Issue 内容:', body);
+            
+            // 确保标签存在
+            if (!issue.labels.some(l => l.name === '友链申请')) {
+              console.log('【停止】未检测到标签 [友链申请]');
+              return;
+            }
 
-            // 检查标签
-            const isFriendRequest = issue.labels.some(l => l.name === '友链申请');
-            if (!isFriendRequest) return;
-
-            // 评论触发检查：确保是作者回复
-            if (context.eventName === 'issue_comment' && context.payload.comment.user.login !== issue.user.login) return;
-
-            // 提取字段
-            function extractField(label, text) {
-              const regex = new RegExp(`### ${label}\\s*\\n([^#]+)`, 'i');
+            // 正则匹配：兼容表单提交后可能产生的额外空行
+            const extractField = (label, text) => {
+              const regex = new RegExp(`### ${label}\\s*\\n([^#\\n]+)`, 'i');
               const match = text.match(regex);
               return match ? match[1].trim() : null;
-            }
+            };
 
             const data = {
               title: extractField('网站名称', body),
@@ -49,36 +51,37 @@ jobs:
               desc: extractField('网站描述', body),
               imgurl: extractField('网站头像', body)
             };
-
+            
+            console.log('解析数据:', data);
+            
             if (!data.title || !data.siteurl) {
+              console.log('【停止】未能提取到必要字段');
               await github.rest.issues.createComment({
                 owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.number,
-                body: '信息不完整，请检查表单是否填写正确。'
+                body: '解析失败：请确认 Issue 内容是否符合表单格式。'
               });
               return;
             }
 
-            // 校验 URL 可访问性
             const { execSync } = require('child_process');
             try {
-              execSync(`curl -I -L --fail --max-time 5 "${data.siteurl}"`);
+              console.log('正在校验链接:', data.siteurl);
+              execSync(`curl -I -L --fail --max-time 10 "${data.siteurl}"`);
             } catch (e) {
+              console.log('【警告】链接校验失败');
               await github.rest.issues.createComment({
                 owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.number,
-                body: `警告：无法访问链接 ${data.siteurl}，请确认地址是否有效。`
+                body: `警告：无法访问链接 ${data.siteurl}。`
               });
-              return;
             }
 
       - name: 提交 PR
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "feat: add friend link for ${{ github.event.issue.title }}"
+          commit-message: "feat: add friend link from #${{ github.event.issue.number }}"
           branch: auto-link/${{ github.event.issue.number }}
           title: "友链申请: ${{ github.event.issue.title }}"
-          body: |
-            此 PR 由 Issue #${{ github.event.issue.number }} 自动生成。
-            请人工确认友链信息是否符合规范。
+          body: "此 PR 由 Issue #${{ github.event.issue.number }} 自动生成。"
           delete-branch: true
 
