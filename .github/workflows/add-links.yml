@@ -62,14 +62,17 @@ jobs:
             // 4. 写入 JSON
             const filePath = path.join(process.cwd(), 'src/links.json');
             const links = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-            
-            if (links.some(l => l.siteurl === data.siteurl)) {
+            // 修改脚本中的检查逻辑
+            const exists = links.find(l => l.siteurl === data.siteurl);
+            if (exists) {
+              console.log('检测到重复链接，匹配到的原条目:', exists);
               await github.rest.issues.createComment({
                 owner: context.repo.owner, repo: context.repo.repo, issue_number: issue.number,
-                body: '提示：该链接已存在于列表中。'
+                body: `提示：链接已存在（匹配到: ${exists.title}），无需重复添加。`
               });
-              return;
+              return; // 这里会直接跳过，所以不会生成 PR
             }
+
 
             links.push(data);
             fs.writeFileSync(filePath, JSON.stringify(links, null, 2));
