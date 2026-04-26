@@ -17,10 +17,16 @@
     "desc": "光と言葉の狭間",
     "siteurl": "https://kasuha.com/"
   },
-  { 
+  {
     "title": "UpXuu's blog",
     "imgurl": "https://upxuu.com/images/20260214145619.jpg",
     "desc": "逐光而上！",
     "siteurl": "https://upxuu.com"
+  },
+  {
+    "title": "111测试",
+    "siteurl": "https://blog.afingpo.top",
+    "desc": "111",
+    "imgurl": "https://blog.afingpo.top/logo.webp"
   }
 ]
