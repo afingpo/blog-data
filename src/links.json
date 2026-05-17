@@ -17,10 +17,16 @@
     "desc": "光と言葉の狭間",
     "siteurl": "https://kasuha.com/"
   },
-  { 
+  {
     "title": "UpXuu's blog",
     "imgurl": "https://upxuu.com/images/20260214145619.jpg",
     "desc": "逐光而上！",
     "siteurl": "https://upxuu.com"
+  },
+  {
+    "title": "二叉树树",
+    "siteurl": "https://2x.nz",
+    "desc": "Protect What You Love.",
+    "imgurl": "https://q2.qlogo.cn/headimg_dl?dst_uin=2726730791&spec=0"
   }
 ]
