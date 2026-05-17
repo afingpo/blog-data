@@ -26,7 +26,7 @@
 ```
 
 #### 通过 Issue
-- 请在 Issue 页使用 [友链申请](github.com/afingpo/blog-data/issues/new?template=links.yml) 并按要求填写相关信息
+- 请在 Issue 页使用 [友链申请](https://github.com/afingpo/blog-data/issues/new?template=links.yml) 并按要求填写相关信息
 - 填写完成后，提交该 Issue
 - 我们将会以 Gitbub Action 自动审理并提出PR + 人工合并拉取请求 的方式进行流程，并在通过后更新站点
 - 若许久未通过审核/合并6小时后站点未更新，请发送邮件到 [邮箱](mailto:me@afipo.top)（主要周末/休息日回复，工作日小概率回复，请耐心等待）
